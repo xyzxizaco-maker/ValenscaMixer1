@@ -29,6 +29,26 @@ jobs:
       - name: Extract project ZIP
         run: unzip -o ValenscaMixerAndroid_BuildReady.zip
 
+      - name: Fix Java Kotlin JVM target
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          p = Path("ValenscaMixerAndroid/app/build.gradle.kts")
+          s = p.read_text()
+          s = s.replace(
+              '    kotlinOptions { jvmTarget = "17" }',
+              '''    compileOptions {
+                  sourceCompatibility = JavaVersion.VERSION_17
+                  targetCompatibility = JavaVersion.VERSION_17
+              }
+
+              kotlinOptions {
+                  jvmTarget = "17"
+              }'''
+          )
+          p.write_text(s)
+          PY
       - name: Build Android APK
         working-directory: ValenscaMixerAndroid
         run: gradle --no-daemon assembleDebug
