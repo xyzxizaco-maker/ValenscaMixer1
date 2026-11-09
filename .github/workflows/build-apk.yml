@@ -27,12 +27,12 @@ jobs:
           gradle-version: '8.9'
 
       - name: Extract project ZIP
-        run: |
-          unzip -o ValenscaMixerAndroid_BuildReady.zip -d ValenscaMixerAndroid
-
-      - name: Build Android APK
-        working-directory: ValenscaMixerAndroid
-        run: |
+  run: |
+    unzip -o ValenscaMixerAndroid_BuildReady.zip
+      -- name: Build Android APK
+  working-directory: ValenscaMixerAndroid
+  run: |
+    gradle --no-daemon assembleDebug
           if [ -f gradlew ]; then
             chmod +x gradlew
             ./gradlew --no-daemon assembleDebug
